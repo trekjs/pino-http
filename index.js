@@ -30,7 +30,7 @@ function pinoHttp(options, logger) {
     if (skip && skip(ctx, options)) return next()
 
     const start = Date.now()
-    const { req, res } = ctx
+    const { req, res, rawRes } = ctx
 
     logger[level](
       {
@@ -53,8 +53,8 @@ function pinoHttp(options, logger) {
       throw err
     }
 
-    res.once('finish', done)
-    res.once('close', done)
+    rawRes.once('finish', done)
+    rawRes.once('close', done)
 
     function done(err) {
       this.removeListener('finish', done)
